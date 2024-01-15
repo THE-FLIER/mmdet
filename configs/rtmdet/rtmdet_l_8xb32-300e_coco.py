@@ -2,6 +2,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_1x.py',
     '../_base_/datasets/coco_detection.py', './rtmdet_tta.py'
 ]
+checkpoint = ('/home/zf/mmdetection/configs/rtmdet/rtmdet_m_8xb32-300e_coco_20220719_112220-229f527c.pth')
 model = dict(
     type='RTMDet',
     data_preprocessor=dict(
@@ -16,6 +17,11 @@ model = dict(
         expand_ratio=0.5,
         deepen_factor=1,
         widen_factor=1,
+        init_cfg=dict(
+            checkpoint=
+            '/home/zf/mmdetection/configs/rtmdet/rtmdet_m_8xb32-300e_coco_20220719_112220-229f527c.pth',
+            prefix='backbone.',
+            type='Pretrained'),
         channel_attention=True,
         norm_cfg=dict(type='SyncBN'),
         act_cfg=dict(type='SiLU', inplace=True)),
@@ -29,7 +35,7 @@ model = dict(
         act_cfg=dict(type='SiLU', inplace=True)),
     bbox_head=dict(
         type='RTMDetSepBNHead',
-        num_classes=80,
+        num_classes=1,
         in_channels=256,
         stacked_convs=2,
         feat_channels=256,
